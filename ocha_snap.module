@@ -42,6 +42,8 @@ function ocha_snap_credentials() {
  *
  * @param string $url
  *   The URL to generate the PDF for.
+ * @param array $params
+ *   An array of optional parameters for the Snap Service request.
  *
  * @return various
  *   A binary PDF data blob or FALSE if an error occurred.
@@ -116,15 +118,15 @@ PDF_FOOTER;
     'pdfMarginUnit' => 'px',
   );
 
+  // Apply default parameters in case anything was missing.
+  $params += $default_params;
+
   // If the target site is protected by basic auth, add the required
   // credentials to the request.
   $credentials = ocha_snap_credentials();
   if ($credentials !== FALSE) {
-    $default_params += $credentials;
+    $params += $credentials;
   }
-
-  // Apply default parameters in case anything was missing.
-  $parameters += $default_params;
 
   // Build the API request.
   $url = ocha_snap_url();
@@ -132,6 +134,7 @@ PDF_FOOTER;
   $req_params = array(
     'headers' => array(
       'X-Forwarded-For' => ip_address(),
+      'User-Agent'      => $_SERVER['HTTP_USER_AGENT'],
     ),
     'method' => 'POST',
   );
