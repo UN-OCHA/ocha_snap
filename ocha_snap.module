@@ -41,7 +41,7 @@ function ocha_snap_credentials() {
  * PDF generator.
  *
  * @param string $url
- *   The URL to generate the PDF /PNGfor.
+ *   The URL to generate the PDF /PNG for.
  * @param array $params
  *   An array of optional parameters for the Snap Service request.
  *
