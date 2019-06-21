@@ -12,13 +12,13 @@
  */
 
 // A default snap service endpoint.
-define('FTS_DATA_SNAP_URL', 'http://snap:8442/snap');
+define('OCHA_SNAP_URL', 'http://localhost:8442/snap');
 
 /**
  * Helper to fetch the snap service endpoint.
  */
 function ocha_snap_url() {
-  return variable_get('fts_data_snap_url', FTS_DATA_SNAP_URL);
+  return variable_get('ocha_snap_url', OCHA_SNAP_URL);
 }
 
 /**
