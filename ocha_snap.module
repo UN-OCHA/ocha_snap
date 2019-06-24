@@ -41,14 +41,14 @@ function ocha_snap_credentials() {
  * PDF generator.
  *
  * @param string $url
- *   The URL to generate the PDF for.
+ *   The URL to generate the PDF /PNG for.
  * @param array $params
  *   An array of optional parameters for the Snap Service request.
  *
  * @return various
  *   A binary PDF data blob or FALSE if an error occurred.
  */
-function ocha_snap_pdf($url, $params = array()) {
+function ocha_snap($url, $params = array()) {
   global $base_url;
 
   // Since Drupal's string translations are set up with this existing string, we
@@ -58,10 +58,6 @@ function ocha_snap_pdf($url, $params = array()) {
   $pdf_pagination = str_replace('[page]', '<span class="pageNumber"></span>', $pdf_pagination);
   $pdf_pagination = str_replace('[topage]', '<span class="totalPages"></span>', $pdf_pagination);
 
-  // PDF Footer message.
-  $pdf_date = date('j M Y', time());
-  $pdf_message = t('Powered by @site_name. Date of creation: @date', array('@name' => variable_get('site_name', ''), '@date' => $pdf_date));
-
   // Construct our PDF footer.
   //
   // Note: you CANNOT use remote references such as image URLs or stylesheets,
@@ -70,10 +66,6 @@ function ocha_snap_pdf($url, $params = array()) {
 <footer class="pdf-footer">
   <div class="pdf-footer__left">
     $pdf_pagination
-  </div>
-  <div class="pdf-footer__right">
-    $pdf_message<br>
-    $base_url
   </div>
 </footer>
 <style type="text/css">
@@ -106,10 +98,10 @@ PDF_FOOTER;
   $default_params = array(
     'url'           => $url,
     'service'       => variable_get('syslog_identity', 'drupal'),
-    'media'         => 'print',
+    'media'         => 'screen',
     'output'        => 'pdf',
     'pdfFormat'     => 'A4',
-    'pdfLandscape'  => 'true',
+    'pdfLandscape'  => 'false',
     'pdfBackground' => 'true',
     // Suppress default header by sending space character.
     'pdfHeader'     => ' ',
