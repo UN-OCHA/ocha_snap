@@ -1,4 +1,4 @@
-# OCHA Snap Service integration for Drupal. This is a fork of the orginal repo customised for FTS Public needs.
+# OCHA Snap Service integration for Drupal.
 
 You can find the snap service repository at https://github.com/UN-OCHA/tools-snap-service
 
