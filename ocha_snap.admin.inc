@@ -10,8 +10,9 @@
 function ocha_snap_settings() {
 
   $form['ocha_snap_tokens'] = array(
-    '#type' => 'markup',
-    '#value' => t('You can use the token [pagination] in both the header and footer. It will be replaced with a translated version of the text <em>Page current of total</em> with the appropriate numbers inserted.'),
+    '#type'   => 'item',
+    '#title'  => t('Tokens'),
+    '#markup' => t('You can use the token <em>[pagination]</em> in both the header and footer. It will be replaced with a translated version of the text <em>Page current of total</em> with the appropriate numbers inserted.'),
   );
 
   $form['ocha_snap_header'] = array(
