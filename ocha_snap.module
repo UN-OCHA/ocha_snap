@@ -185,3 +185,10 @@ function ocha_snap_pdf_footer() {
   }
 </style>';
 }
+
+/**
+ * Implements hook_print_pdf_available_libs_alter().
+ */
+function ocha_snap_print_pdf_available_libs_alter(&$pdf_tools) {
+  $pdf_tools['ocha_snap|' . check_plain(variable_get('ocha_snap_url'))] = t('OCHA Snap Service (@url)', array('@url' => variable_get('ocha_snap_url')));
+}
