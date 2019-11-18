@@ -15,4 +15,5 @@ function ocha_snap_uninstall() {
   variable_del('ocha_snap_header');
   variable_del('ocha_snap_footer');
   variable_del('ocha_snap_css');
+  variable_del('ocha_snap_debug');
 }

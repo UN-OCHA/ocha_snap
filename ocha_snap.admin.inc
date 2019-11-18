@@ -37,5 +37,12 @@ function ocha_snap_settings() {
     '#default_value' => variable_get('ocha_snap_css', ''),
   );
 
+  $form['ocha_snap_debug'] = array(
+    '#type'          => 'checkbox',
+    '#title'         => t('Debug'),
+    '#description'   => t('Collect and log debug information in the Snap Service backend.'),
+    '#default_value' => variable_get('ocha_snap_debug', 0),
+  );
+
   return system_settings_form($form);
 }
