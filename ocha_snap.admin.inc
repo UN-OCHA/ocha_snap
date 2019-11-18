@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Administration functions for the snap module.

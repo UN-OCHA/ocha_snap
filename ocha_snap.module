@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * OCHA Snap generator module.
@@ -63,9 +64,7 @@ function ocha_snap_credentials() {
  * @return various
  *   A binary file data blob or FALSE if an error occurred.
  */
-function ocha_snap($url, $params = array()) {
-  global $base_url;
-
+function ocha_snap($url, array $params = array()) {
   // Since Drupal's string translations are set up with this existing string, we
   // allow localization to occur first before doing string substitution to work
   // with the Snap Service.
