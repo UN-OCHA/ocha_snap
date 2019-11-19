@@ -92,6 +92,7 @@ function ocha_snap($url, array $params = array()) {
     'pdfFooter'     => $pdf_footer,
     'pdfMarginTop'  => '24',
     'pdfMarginUnit' => 'px',
+    'debug'         => variable_get('ocha_snap_debug', 0) ? 'true' : 'false',
   );
 
   // Apply default parameters in case anything was missing.
