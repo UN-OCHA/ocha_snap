@@ -1,0 +1,7 @@
+ocha_snap.admin:
+  path: '/admin/config/services/snap'
+  defaults:
+    _form: '\Drupal\ocha_snap\Form\OchaSnapSettingsForm'
+    _title: 'OCHA Snap settings'
+  requirements:
+    _permission: 'administer OCHA Snap'

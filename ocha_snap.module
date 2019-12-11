@@ -15,34 +15,21 @@
 define('OCHA_SNAP_URL', 'http://localhost:8442/snap');
 
 /**
- * Implements hook_menu().
- */
-function ocha_snap_menu() {
-  $items['admin/config/services/snap'] = array(
-    'title' => 'Snap Service',
-    'description' => 'Snap Service intergration configuration',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('ocha_snap_settings'),
-    'access arguments' => array('administer site configuration'),
-    'file' => 'ocha_snap.admin.inc',
-    'type' => MENU_NORMAL_ITEM,
-  );
-  return $items;
-}
-
-/**
  * Helper to fetch the snap service endpoint.
  */
 function ocha_snap_url() {
-  return variable_get('ocha_snap_url', OCHA_SNAP_URL);
+  if (!empty(\Drupal::config('ocha_snap.settings')->get('url'))) {
+    return \Drupal::config('ocha_snap.settings')->get('url');
+  }
+  return OCHA_SNAP_URL;
 }
 
 /**
  * Helper to fetch site credentials.
  */
 function ocha_snap_credentials() {
-  $user = variable_get('ocha_snap_site_user', '');
-  $pass = variable_get('ocha_snap_site_pass', '');
+  $user = \Drupal::config('ocha_snap.settings')->get('site_user');
+  $pass = \Drupal::config('ocha_snap.settings')->get('site_pass');
 
   if (!empty($user) && !empty($pass)) {
     return array(
@@ -81,7 +68,7 @@ function ocha_snap($url, array $params = array()) {
 
   $default_params = array(
     'url'           => $url,
-    'service'       => variable_get('syslog_identity', 'drupal'),
+    'service'       => \Drupal::config('ocha_snap.settings')->get('service_name'),
     'media'         => 'screen',
     'output'        => 'pdf',
     'pdfFormat'     => 'A4',
@@ -92,7 +79,7 @@ function ocha_snap($url, array $params = array()) {
     'pdfFooter'     => $pdf_footer,
     'pdfMarginTop'  => '24',
     'pdfMarginUnit' => 'px',
-    'debug'         => variable_get('ocha_snap_debug', 0) ? 'true' : 'false',
+    'debug'         => \Drupal::config('ocha_snap.settings')->get('ocha_snap_debug') ? 'true' : 'false',
   );
 
   // Apply default parameters in case anything was missing.
@@ -110,18 +97,18 @@ function ocha_snap($url, array $params = array()) {
   $url .= '?' . http_build_query($params, NULL, '&');
   $req_params = array(
     'headers' => array(
-      'X-Forwarded-For' => ip_address(),
+      'X-Forwarded-For' => Drupal::request()->getClientIp(),
       'User-Agent'      => $_SERVER['HTTP_USER_AGENT'],
     ),
     'method' => 'POST',
   );
 
   // Use CHR if installed, otherwise use Drupal built-in http_request.
-  if (module_exists('chr')) {
+  if (\Drupal::service('module_handler')->moduleExists('chr')) {
     $output = chr_curl_http_request($url, $req_params);
   }
   else {
-    $output = drupal_http_request($url, $req_params);
+    $output = \Drupal::httpClient()->get($url, $req_params);
   }
 
   // Basic error checking.
@@ -138,10 +125,10 @@ function ocha_snap($url, array $params = array()) {
  */
 function ocha_snap_pdf_header() {
   // The default is a single space which suppresses header output.
-  $header = variable_get('ocha_snap_header', ' ');
+  $header = \Drupal::config('ocha_snap.settings')->get('ocha_snap_header');
 
   // If CSS is specified, now would be a good time to inject it.
-  if ($css = variable_get('ocha_snap_css', '')) {
+  if ($css = \Drupal::config('ocha_snap.settings')->get('ocha_snap_css')) {
     $header .= '<style type="text/css">' . $css . '</style>';
   }
   return $header;
@@ -151,9 +138,10 @@ function ocha_snap_pdf_header() {
  * Provide a default PDF footer for compatibility reasons.
  */
 function ocha_snap_pdf_footer() {
-  if ($footer = variable_get('ocha_snap_footer', '')) {
+  if ($footer = \Drupal::config('ocha_snap.settings')->get('ocha_snap_footer')) {
     return $footer;
   }
+
   return '<footer class="pdf-footer">
   <div class="pdf-footer__left">
     [pagination]

@@ -1,0 +1,24 @@
+header:
+  type: text
+  label: 'Header'
+footer:
+  type: text
+  label: 'Footer'
+css:
+  type: text
+  label: 'CSS'
+debug:
+  type: boolean
+  label: 'Debug on'
+site_user:
+  type: string
+  label: 'Basic Auth user'
+site_pass:
+  type: string
+  label: 'Basic Auth password'
+service_name:
+  type: string
+  label: 'Service name'
+url:
+  type: string
+  label: 'Snap endpoint'
