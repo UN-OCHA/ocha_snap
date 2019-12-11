@@ -11,9 +11,6 @@
  * - Allow footer and header to be configured.
  */
 
-// A default snap service endpoint.
-define('OCHA_SNAP_URL', 'http://localhost:8442/snap');
-
 /**
  * Helper to fetch the snap service endpoint.
  */
@@ -21,7 +18,8 @@ function ocha_snap_url() {
   if (!empty(\Drupal::config('ocha_snap.settings')->get('url'))) {
     return \Drupal::config('ocha_snap.settings')->get('url');
   }
-  return OCHA_SNAP_URL;
+
+  return 'http://localhost:8442/snap';
 }
 
 /**
@@ -32,10 +30,10 @@ function ocha_snap_credentials() {
   $pass = \Drupal::config('ocha_snap.settings')->get('site_pass');
 
   if (!empty($user) && !empty($pass)) {
-    return array(
+    return [
       'user' => $user,
       'pass' => $pass,
-    );
+    ];
   }
   return FALSE;
 }
@@ -51,7 +49,7 @@ function ocha_snap_credentials() {
  * @return various
  *   A binary file data blob or FALSE if an error occurred.
  */
-function ocha_snap($url, array $params = array()) {
+function ocha_snap($url, array $params = []) {
   // Since Drupal's string translations are set up with this existing string, we
   // allow localization to occur first before doing string substitution to work
   // with the Snap Service.
@@ -66,7 +64,7 @@ function ocha_snap($url, array $params = array()) {
   $pdf_header = str_replace('[pagination]', $pdf_pagination, ocha_snap_pdf_header());
   $pdf_footer = str_replace('[pagination]', $pdf_pagination, ocha_snap_pdf_footer());
 
-  $default_params = array(
+  $default_params = [
     'url'           => $url,
     'service'       => \Drupal::config('ocha_snap.settings')->get('service_name'),
     'media'         => 'screen',
@@ -80,7 +78,7 @@ function ocha_snap($url, array $params = array()) {
     'pdfMarginTop'  => '24',
     'pdfMarginUnit' => 'px',
     'debug'         => \Drupal::config('ocha_snap.settings')->get('ocha_snap_debug') ? 'true' : 'false',
-  );
+  ];
 
   // Apply default parameters in case anything was missing.
   $params += $default_params;
@@ -95,13 +93,13 @@ function ocha_snap($url, array $params = array()) {
   // Build the API request.
   $url = ocha_snap_url();
   $url .= '?' . http_build_query($params, NULL, '&');
-  $req_params = array(
-    'headers' => array(
+  $req_params = [
+    'headers' => [
       'X-Forwarded-For' => Drupal::request()->getClientIp(),
       'User-Agent'      => $_SERVER['HTTP_USER_AGENT'],
-    ),
+    ],
     'method' => 'POST',
-  );
+  ];
 
   // Use CHR if installed, otherwise use Drupal built-in http_request.
   if (\Drupal::service('module_handler')->moduleExists('chr')) {
@@ -113,7 +111,7 @@ function ocha_snap($url, array $params = array()) {
 
   // Basic error checking.
   if ($output->code != 200) {
-    watchdog('ocha_snap', 'Failed to generate PDF for "%u".', array('%u' => $params['url']), WATCHDOG_ERROR);
+    watchdog('ocha_snap', 'Failed to generate PDF for "%u".', ['%u' => $params['url']], WATCHDOG_ERROR);
     return FALSE;
   }
 
@@ -178,5 +176,5 @@ function ocha_snap_pdf_footer() {
  * Implements hook_print_pdf_available_libs_alter().
  */
 function ocha_snap_print_pdf_available_libs_alter(&$pdf_tools) {
-  $pdf_tools['ocha_snap|' . check_plain(variable_get('ocha_snap_url'))] = t('OCHA Snap Service (@url)', array('@url' => variable_get('ocha_snap_url')));
+  $pdf_tools['ocha_snap|' . check_plain(variable_get('ocha_snap_url'))] = t('OCHA Snap Service (@url)', ['@url' => variable_get('ocha_snap_url')]);
 }
