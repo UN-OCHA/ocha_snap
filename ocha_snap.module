@@ -11,7 +11,7 @@
  * - Allow footer and header to be configured.
  */
 
-use \Drupal\Component\Utility\UrlHelper;
+use Drupal\Component\Utility\UrlHelper;
 
 /**
  * Helper to fetch the snap service endpoint.
