@@ -11,6 +11,8 @@
  * - Allow footer and header to be configured.
  */
 
+use \Drupal\Component\Utility\UrlHelper;
+
 /**
  * Helper to fetch the snap service endpoint.
  */
@@ -64,9 +66,17 @@ function ocha_snap($url, array $params = []) {
   $pdf_header = str_replace('[pagination]', $pdf_pagination, ocha_snap_pdf_header());
   $pdf_footer = str_replace('[pagination]', $pdf_pagination, ocha_snap_pdf_footer());
 
+  // Service depends on syslog module. Be a bit sensible.
+  if (\Drupal::service('module_handler')->moduleExists('syslog')) {
+    $service = \Drupal::config('syslog.settings')->get('identity');
+  }
+  else {
+    $service = 'drupal';
+  }
+
   $default_params = [
     'url'           => $url,
-    'service'       => \Drupal::config('ocha_snap.settings')->get('service_name'),
+    'service'       => $service,
     'media'         => 'screen',
     'output'        => 'pdf',
     'pdfFormat'     => 'A4',
@@ -92,7 +102,7 @@ function ocha_snap($url, array $params = []) {
 
   // Build the API request.
   $url = ocha_snap_url();
-  $url .= '?' . http_build_query($params, NULL, '&');
+  $url .= '?' . UrlHelper::buildQuery($params);
   $req_params = [
     'headers' => [
       'X-Forwarded-For' => Drupal::request()->getClientIp(),
@@ -106,16 +116,16 @@ function ocha_snap($url, array $params = []) {
     $output = chr_curl_http_request($url, $req_params);
   }
   else {
-    $output = \Drupal::httpClient()->get($url, $req_params);
+    $output = \Drupal::httpClient()->post($url, $req_params);
   }
 
   // Basic error checking.
-  if ($output->code != 200) {
-    watchdog('ocha_snap', 'Failed to generate PDF for "%u".', ['%u' => $params['url']], WATCHDOG_ERROR);
+  if ($output->getStatusCode() != 200) {
+    \Drupal::logger('ocha_snap')->error('Failed to generate PDF for "%u".', ['%u' => $params['url']]);
     return FALSE;
   }
 
-  return $output->data;
+  return $output->getBody();
 }
 
 /**
