@@ -39,6 +39,27 @@ class OchaSnapSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config(static::SETTINGS);
 
+    $form['url'] = [
+      '#type' => 'textfield',
+      '#title'         => $this->t('Url'),
+      '#description'   => $this->t('Snap service endpoint (eg: http://www.test.com:8442/snap). If left empty, <em>http://localhost:8442/snap</em> will be used.'),
+      '#default_value' => $config->get('url'),
+    ];
+
+    $form['site_user'] = [
+      '#type' => 'textfield',
+      '#title'         => $this->t('Site User'),
+      '#description'   => $this->t('Snap service user name.'),
+      '#default_value' => $config->get('site_user'),
+    ];
+
+    $form['site_pass'] = [
+      '#type' => 'textfield',
+      '#title'         => $this->t('Site password'),
+      '#description'   => $this->t('Password associated with snap service user.'),
+      '#default_value' => $config->get('site_pass'),
+    ];
+
     $form['tokens'] = [
       '#type'   => 'item',
       '#title'  => $this->t('Tokens'),
@@ -81,6 +102,9 @@ class OchaSnapSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->configFactory->getEditable(static::SETTINGS)
+      ->set('url', $form_state->getValue('url'))
+      ->set('site_user', $form_state->getValue('site_user'))
+      ->set('site_pass', $form_state->getValue('site_pass'))
       ->set('header', $form_state->getValue('header'))
       ->set('footer', $form_state->getValue('footer'))
       ->set('css', $form_state->getValue('css'))

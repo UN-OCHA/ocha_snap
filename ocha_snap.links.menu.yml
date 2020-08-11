@@ -1,0 +1,6 @@
+ocha_snap.config:
+  title: 'OCHA Snap'
+  route_name: ocha_snap.admin
+  description: 'Configuration for Snap Service'
+  parent: system.admin_config_system
+
