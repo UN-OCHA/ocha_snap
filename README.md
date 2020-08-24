@@ -1,9 +1,11 @@
-# OCHA Snap Service integration for Drupal.
+# UN-OCHA Snap Service integration for Drupal
 
-You can find the snap service repository at https://github.com/UN-OCHA/tools-snap-service
+This repository contains branches for both Drupal 7 and Drupal 8.
 
-# Quick Start
+## Quick Start
 
 Install this module and add a function that calls `ocha_snap($url)`.
 
-All Snap Service parameters are documented at https://github.com/UN-OCHA/tools-snap-service#parameters
+## Full Documentation
+
+:books: https://github.com/UN-OCHA/tools-snap-service#snap-service
