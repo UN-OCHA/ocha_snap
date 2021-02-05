@@ -4,7 +4,7 @@
     "license": "GPL-2.0-only",
     "require": {
         "composer/installers": "^1.2",
-        "drupal/core":"^8.0"
+        "drupal/core": "^8 || ^9"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
