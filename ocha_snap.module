@@ -87,7 +87,7 @@ function ocha_snap($url, array $params = []) {
     'pdfFooter'     => $pdf_footer,
     'pdfMarginTop'  => '24',
     'pdfMarginUnit' => 'px',
-    'debug'         => \Drupal::config('ocha_snap.settings')->get('ocha_snap_debug') ? 'true' : 'false',
+    'debug'         => \Drupal::config('ocha_snap.settings')->get('debug') ? 'true' : 'false',
   ];
 
   // Apply default parameters in case anything was missing.
@@ -133,10 +133,10 @@ function ocha_snap($url, array $params = []) {
  */
 function ocha_snap_pdf_header() {
   // The default is a single space which suppresses header output.
-  $header = \Drupal::config('ocha_snap.settings')->get('ocha_snap_header');
+  $header = \Drupal::config('ocha_snap.settings')->get('header');
 
   // If CSS is specified, now would be a good time to inject it.
-  if ($css = \Drupal::config('ocha_snap.settings')->get('ocha_snap_css')) {
+  if ($css = \Drupal::config('ocha_snap.settings')->get('css')) {
     $header .= '<style type="text/css">' . $css . '</style>';
   }
   return $header;
@@ -146,7 +146,7 @@ function ocha_snap_pdf_header() {
  * Provide a default PDF footer for compatibility reasons.
  */
 function ocha_snap_pdf_footer() {
-  if ($footer = \Drupal::config('ocha_snap.settings')->get('ocha_snap_footer')) {
+  if ($footer = \Drupal::config('ocha_snap.settings')->get('footer')) {
     return $footer;
   }
 
@@ -186,5 +186,6 @@ function ocha_snap_pdf_footer() {
  * Implements hook_print_pdf_available_libs_alter().
  */
 function ocha_snap_print_pdf_available_libs_alter(&$pdf_tools) {
-  $pdf_tools['ocha_snap|' . check_plain(variable_get('ocha_snap_url'))] = t('OCHA Snap Service (@url)', ['@url' => variable_get('ocha_snap_url')]);
+  $url = ocha_snap_url();
+  $pdf_tools['ocha_snap|' . $url] = t('OCHA Snap Service (@url)', ['@url' => $url]);
 }
