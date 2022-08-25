@@ -87,8 +87,13 @@ function ocha_snap($url, array $params = []) {
     'pdfFooter'     => $pdf_footer,
     'pdfMarginTop'  => '24',
     'pdfMarginUnit' => 'px',
-    'debug'         => \Drupal::config('ocha_snap.settings')->get('debug') ? 'true' : 'false',
   ];
+
+  // Only pass the debug param if needed. And make sure it's a Boolean.
+  $debug = \Drupal::config('ocha_snap.settings')->get('debug');
+  if ($debug) {
+    $default_params['debug'] = 'TRUE';
+  }
 
   // Apply default parameters in case anything was missing.
   $params += $default_params;
