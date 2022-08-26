@@ -51,7 +51,7 @@ function ocha_snap_credentials() {
  * @return various
  *   A binary file data blob or FALSE if an error occurred.
  */
-function ocha_snap($url, array $params = []) {
+function ocha_snap_generate($url, array $params = []) {
   // Since Drupal's string translations are set up with this existing string, we
   // allow localization to occur first before doing string substitution to work
   // with the Snap Service.
@@ -188,4 +188,23 @@ function ocha_snap_pdf_footer() {
 function ocha_snap_print_pdf_available_libs_alter(&$pdf_tools) {
   $url = ocha_snap_url();
   $pdf_tools['ocha_snap|' . $url] = t('OCHA Snap Service (@url)', ['@url' => $url]);
+}
+
+/**
+ * Compat wrapper for the PDF generator.
+ *
+ * Allow the module to work using the old call to create
+ * a snap, but emit a deprecation warning.
+ *
+ * @param string $url
+ *   The URL to generate the PDF or PNG for.
+ * @param array $params
+ *   An array of optional parameters for the Snap Service request.
+ *
+ * @return various
+ *   A binary file data blob or FALSE if an error occurred.
+ */
+function ocha_snap($url, array $params = []) {
+  @trigger_error('Calling ' . __METHOD__ . '() is deprecated. Use ocha_snap_generate() instead.', E_USER_DEPRECATED);
+  return ocha_snap_generate($url, $params);
 }
