@@ -92,7 +92,7 @@ function ocha_snap_generate($url, array $params = []) {
   // Only pass the debug param if needed. And make sure it's a Boolean.
   $debug = \Drupal::config('ocha_snap.settings')->get('debug');
   if ($debug) {
-    $default_params['debug'] = 'TRUE';
+    $default_params['debug'] = '1';
   }
 
   // Apply default parameters in case anything was missing.
