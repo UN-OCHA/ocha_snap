@@ -112,6 +112,7 @@ function ocha_snap_generate($url, array $params = []) {
     'headers' => [
       'X-Forwarded-For' => Drupal::request()->getClientIp(),
       'User-Agent'      => $_SERVER['HTTP_USER_AGENT'],
+      'http_errors'     => FALSE,
     ],
     'method' => 'POST',
   ];
