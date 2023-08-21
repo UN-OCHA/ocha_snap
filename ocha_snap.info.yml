@@ -3,4 +3,4 @@ description: Allows your Drupal site to use a Snap Service to generate PDF docum
 package: Custom
 type: module
 core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10
