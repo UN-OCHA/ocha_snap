@@ -1,0 +1,5 @@
+ocha_snap.admin:
+  title: 'OCHA Snap'
+  parent: system.admin_config_services
+  description: 'OCHA Snap settings.'
+  route_name: ocha_snap.admin
