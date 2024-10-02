@@ -48,7 +48,7 @@ function ocha_snap_credentials() {
  * @param array $params
  *   An array of optional parameters for the Snap Service request.
  *
- * @return various
+ * @return string|false
  *   A binary file data blob or FALSE if an error occurred.
  */
 function ocha_snap_generate($url, array $params = []) {
