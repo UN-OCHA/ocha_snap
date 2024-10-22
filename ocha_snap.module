@@ -149,7 +149,7 @@ function ocha_snap_generate($url, array $params = []) {
  */
 function ocha_snap_pdf_header() {
   // The default is a single space which suppresses header output.
-  $header = \Drupal::config('ocha_snap.settings')->get('header');
+  $header = \Drupal::config('ocha_snap.settings')->get('header') ?? '';
 
   // If CSS is specified, now would be a good time to inject it.
   if ($css = \Drupal::config('ocha_snap.settings')->get('css')) {
