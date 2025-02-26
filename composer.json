@@ -4,13 +4,19 @@
     "license": "GPL-2.0-only",
     "require": {
         "composer/installers": "^1 || ^2",
-        "drupal/core": "^8 || ^9 || ^10"
+        "drupal/core": "^8 || ^9 || ^10 || ^11"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
-        "sebastian/phpcpd": "^4.1"
+        "sebastian/phpcpd": "^6"
     },
     "conflict": {
         "drupal/drupal": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
