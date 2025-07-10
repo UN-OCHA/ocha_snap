@@ -135,9 +135,27 @@ function ocha_snap_generate($url, array $params = []) {
     }
   }
 
-  // Basic error checking.
+  // Error checking. If an exception occurs, snap will return a 40x or 50x with
+  // a JSON encoded message in the response body.
+  // We log only the first one even though the response can contain many.
   if ($output->getStatusCode() != 200) {
-    \Drupal::logger('ocha_snap')->error('Failed to generate PDF for "%u".', ['%u' => $params['url']]);
+    $body = json_decode($output->getBody());
+    $error = $body->errors[0];
+
+    if (!empty($error->status)) {
+      \Drupal::logger('ocha_snap')->error('Failed to generate %output for "%u". HTTP %code: %%msg.', [
+        '%output' => $params['output'],
+        '%u' => $params['url'],
+        '%code' => $error->status,
+        '%msg' => $error->msg,
+      ]);
+    }
+    else {
+      \Drupal::logger('ocha_snap')->error('Failed to generate %output for "%u".', [
+        '%output' => $params['output'],
+        '%u' => $params['url'],
+      ]);
+    }
     return FALSE;
   }
 
