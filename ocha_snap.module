@@ -143,7 +143,7 @@ function ocha_snap_generate($url, array $params = []) {
     $error = $body->errors[0];
 
     if (!empty($error->status)) {
-      \Drupal::logger('ocha_snap')->error('Failed to generate %output for "%u". HTTP %code: %%msg.', [
+      \Drupal::logger('ocha_snap')->error('Failed to generate %output for "%u". HTTP %code: %msg.', [
         '%output' => $params['output'],
         '%u' => $params['url'],
         '%code' => $error->status,
